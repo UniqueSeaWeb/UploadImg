@@ -1,9 +1,16 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, user-scalable=yes">
     <title>画像アップロード</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
         main {
             padding: 48px 24px;
         }
@@ -18,12 +25,20 @@
             padding-top: 24px;
         }
 
+        .uploadInput {
+            cursor: pointer;
+        }
+
         .btnWrapper {
             padding-top: 16px;
         }
 
         .submitBtn {
             background-color: white;
+        }
+
+        .submitBtn:not(:disabled) {
+            cursor: pointer;
         }
 
         .submitBtn:disabled {
@@ -39,23 +54,30 @@
 <body>
     <main>
         <div class="box">
-            <form action="./uploaded.html" method="get">
-                <h1>カメラ</h1>
-                <input type="file" id="uploadInput" accept="image/*" capture="environment">
-                <div class="btnWrapper">
-                    <button type="submit" class="submitBtn" id="submitBtn" disabled>送信</button>
-                </div>
-            </form>
+            <h1>カメラ</h1>
+            <input type="file" class="uploadInput" id="uploadInput" accept="image/*" capture="environment">
+            <div class="btnWrapper">
+                <button type="submit" class="submitBtn" id="submitBtn" disabled>送信</button>
+            </div>
         </div>
     </main>
 
     <script>
         const uploadInput = document.getElementById('uploadInput');
+        const submitBtn = document.getElementById('submitBtn');
+
         uploadInput.addEventListener('change', function (e) {
             if (this.value) {
                 const submitBtn = document.getElementById('submitBtn');
                 submitBtn.disabled = false;
                 submitBtn.classList.add('submitBtn-uploaded');
+            }
+        });
+
+        submitBtn.addEventListener('click', function () {
+            const uploadInput = document.getElementById('uploadInput');
+            if (uploadInput.value) {
+                location.href = './uploaded.html?filename=' + uploadInput.files[0].name;
             }
         });
     </script>
