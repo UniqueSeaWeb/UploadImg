@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>画像アップロード</title>
+    <style>
+        main {
+            padding: 48px 24px;
+        }
+
+        h1 {
+            font-weight: 700;
+            font-size: 20px;
+            line-height: 28px;
+        }
+
+        .box:not(:first-child) {
+            padding-top: 24px;
+        }
+
+        .btnWrapper {
+            padding-top: 16px;
+        }
+
+        .submitBtn {
+            background-color: white;
+        }
+
+        .submitBtn:disabled {
+            background-color: #D9D9D9;
+        }
+
+        .submitBtn-uploaded {
+            background-color: greenyellow;
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <div class="box">
+            <form action="./uploaded.html" method="get">
+                <h1>カメラ</h1>
+                <input type="file" id="uploadInput" accept="image/*" capture="environment">
+                <div class="btnWrapper">
+                    <button type="submit" class="submitBtn" id="submitBtn" disabled>送信</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        const uploadInput = document.getElementById('uploadInput');
+        uploadInput.addEventListener('change', function (e) {
+            if (this.value) {
+                const submitBtn = document.getElementById('submitBtn');
+                submitBtn.disabled = false;
+                submitBtn.classList.add('submitBtn-uploaded');
+            }
+        });
+    </script>
+</body>
+
+</html>
