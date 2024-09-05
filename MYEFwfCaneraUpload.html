@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>マルチパートフォーム方式｜アップロード</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            border: none;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #F2FAF9;
+        }
+
+        header {
+            padding: 12px 20px;
+        }
+
+        h1 {
+            font-weight: 700;
+            font-size: 20px;
+            line-height: 28px;
+            color: #2E2E2E;
+            text-align: center;
+        }
+
+        main {
+            padding: 32px 20px 48px;
+        }
+
+        @media (min-width: 760px) {
+            main {
+                width: 100%;
+                max-width: 800px;
+                margin: 0 auto;
+                padding: 32px 0 64px;
+            }
+        }
+
+        .typo_lead {
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 24px;
+            color: #2E2E2E;
+        }
+
+        .selectArea {
+            padding-top: 24px;
+        }
+
+        .selectBtnList {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .selectBtnList>li {
+            flex-basis: 50%;
+        }
+
+        .selectBtnList>li:nth-child(odd) {
+            padding-right: 12px;
+        }
+
+        .selectBtnList>li:nth-child(even) {
+            padding-left: 12px;
+        }
+
+        .selectBtnList>li:nth-child(n+3) {
+            padding-top: 24px;
+        }
+
+        .imageRadio {
+            display: none;
+        }
+
+        .imageRadio+label {
+            display: flex;
+            align-items: flex-start;
+            width: 100%;
+            padding: 16px;
+            border: 3px solid #FFFFFF;
+            border-radius: 16px;
+            box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.1);
+            background-color: #FFFFFF;
+        }
+
+        .imageRadio:checked+label {
+            border: 3px solid #008673;
+        }
+
+        .imageRadio_icon {
+            flex-shrink: 0;
+        }
+
+        .imageRadio+label svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .imageRadio:not(:checked)+label svg:first-child {
+            display: block;
+        }
+
+        .imageRadio:not(:checked)+label svg:last-child {
+            display: none;
+        }
+
+        .imageRadio:checked+label svg:first-child {
+            display: none;
+        }
+
+        .imageRadio:checked+label svg:last-child {
+            display: block;
+        }
+
+        .imageRadio_Right {
+            flex-grow: 1;
+            height: 100%;
+            padding-left: 8px;
+        }
+
+        .imageRadio_typo_ttl {
+            font-weight: 700;
+            font-size: 16px;
+            line-height: 24px;
+            color: #2E2E2E;
+        }
+
+        .imageRadio_imageArea {
+            height: 108px;
+            padding-top: 8px;
+        }
+
+        @media (min-width: 760px) {
+            .imageRadio_imageArea {
+                height: 128px;
+            }
+        }
+
+        .imageRadio_image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .btnArea {
+            display: flex;
+            justify-content: center;
+            padding-top: 48px;
+        }
+
+        .uploadBtn {
+            width: 280px;
+            padding: 16px 24px;
+            border-radius: 24px;
+            background-color: #008673;
+            font-weight: 700;
+            font-size: 16px;
+            line-height: 16px;
+            color: #FFFFFF;
+        }
+
+        .fileInput {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>画像アップロード</h1>
+    </header>
+
+    <main>
+        <form id="camera_transposition" method="post" enctype="multipart/form-data" action="MYEFwfCameraUpload">
+            <p class="typo_lead">ファイルサイズを選択してアップロードボタンを押してください。</p>
+            <div class="selectArea">
+                <ul class="selectBtnList">
+                    <li>
+                        <input type="radio" name="imageRadio" class="imageRadio" id="imageRadio1" checked><label
+                            for="imageRadio1">
+                            <div class="imageRadio_icon"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M16 26C21.5228 26 26 21.5228 26 16C26 10.4772 21.5228 6 16 6C10.4772 6 6 10.4772 6 16C6 21.5228 10.4772 26 16 26Z"
+                                        fill="white" />
+                                    <path
+                                        d="M16 4C14.76 4 13.56 4.19 12.43 4.54C11.68 4.77 10.96 5.08 10.28 5.45C9.6 5.82 8.96 6.25 8.37 6.74C7.78 7.23 7.23 7.77 6.74 8.37C5.76 9.56 5.01 10.93 4.54 12.43C4.19 13.56 4 14.76 4 16C4 17.24 4.19 18.44 4.54 19.57C5.01 21.07 5.76 22.45 6.74 23.63C7.23 24.22 7.77 24.77 8.37 25.26C8.96 25.75 9.6 26.18 10.28 26.55C10.96 26.92 11.68 27.23 12.43 27.46C13.56 27.81 14.76 28 16 28C22.63 28 28 22.63 28 16C28 9.37 22.63 4 16 4ZM16 26C10.49 26 6 21.51 6 16C6 10.49 10.49 6 16 6C21.51 6 26 10.49 26 16C26 21.51 21.51 26 16 26Z"
+                                        fill="#585858" />
+                                </svg><svg width="32" height="32" viewBox="0 0 32 32" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M16 4C9.37 4 4 9.37 4 16C4 22.63 9.37 28 16 28C22.63 28 28 22.63 28 16C28 9.37 22.63 4 16 4ZM16 19.75C13.93 19.75 12.25 18.07 12.25 16C12.25 13.93 13.93 12.25 16 12.25C18.07 12.25 19.75 13.93 19.75 16C19.75 18.07 18.07 19.75 16 19.75Z"
+                                        fill="#008673" />
+                                    <path
+                                        d="M16 19.75C18.0711 19.75 19.75 18.0711 19.75 16C19.75 13.9289 18.0711 12.25 16 12.25C13.9289 12.25 12.25 13.9289 12.25 16C12.25 18.0711 13.9289 19.75 16 19.75Z"
+                                        fill="white" />
+                                </svg></div>
+                            <div class="imageRadio_Right">
+                                <p class="imageRadio_typo_ttl">0.1MB</p>
+                                <div class="imageRadio_imageArea">
+                                    <img src="./cameraUpload/sample_0.1MB.jpg" class="imageRadio_image">
+                                </div>
+                            </div>
+                        </label>
+                    </li>
+                    <li>
+                        <input type="radio" name="imageRadio" class="imageRadio" id="imageRadio2"><label
+                            for="imageRadio2">
+                            <div class="imageRadio_icon"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M16 26C21.5228 26 26 21.5228 26 16C26 10.4772 21.5228 6 16 6C10.4772 6 6 10.4772 6 16C6 21.5228 10.4772 26 16 26Z"
+                                        fill="white" />
+                                    <path
+                                        d="M16 4C14.76 4 13.56 4.19 12.43 4.54C11.68 4.77 10.96 5.08 10.28 5.45C9.6 5.82 8.96 6.25 8.37 6.74C7.78 7.23 7.23 7.77 6.74 8.37C5.76 9.56 5.01 10.93 4.54 12.43C4.19 13.56 4 14.76 4 16C4 17.24 4.19 18.44 4.54 19.57C5.01 21.07 5.76 22.45 6.74 23.63C7.23 24.22 7.77 24.77 8.37 25.26C8.96 25.75 9.6 26.18 10.28 26.55C10.96 26.92 11.68 27.23 12.43 27.46C13.56 27.81 14.76 28 16 28C22.63 28 28 22.63 28 16C28 9.37 22.63 4 16 4ZM16 26C10.49 26 6 21.51 6 16C6 10.49 10.49 6 16 6C21.51 6 26 10.49 26 16C26 21.51 21.51 26 16 26Z"
+                                        fill="#585858" />
+                                </svg><svg width="32" height="32" viewBox="0 0 32 32" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M16 4C9.37 4 4 9.37 4 16C4 22.63 9.37 28 16 28C22.63 28 28 22.63 28 16C28 9.37 22.63 4 16 4ZM16 19.75C13.93 19.75 12.25 18.07 12.25 16C12.25 13.93 13.93 12.25 16 12.25C18.07 12.25 19.75 13.93 19.75 16C19.75 18.07 18.07 19.75 16 19.75Z"
+                                        fill="#008673" />
+                                    <path
+                                        d="M16 19.75C18.0711 19.75 19.75 18.0711 19.75 16C19.75 13.9289 18.0711 12.25 16 12.25C13.9289 12.25 12.25 13.9289 12.25 16C12.25 18.0711 13.9289 19.75 16 19.75Z"
+                                        fill="white" />
+                                </svg></div>
+                            <div class="imageRadio_Right">
+                                <p class="imageRadio_typo_ttl">2.5MB</p>
+                                <div class="imageRadio_imageArea">
+                                    <img src="./cameraUpload/sample_2.5MB.jpg" class="imageRadio_image">
+                                </div>
+                            </div>
+                        </label>
+                    </li>
+                    <li>
+                        <input type="radio" name="imageRadio" class="imageRadio" id="imageRadio3"><label
+                            for="imageRadio3">
+                            <div class="imageRadio_icon"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M16 26C21.5228 26 26 21.5228 26 16C26 10.4772 21.5228 6 16 6C10.4772 6 6 10.4772 6 16C6 21.5228 10.4772 26 16 26Z"
+                                        fill="white" />
+                                    <path
+                                        d="M16 4C14.76 4 13.56 4.19 12.43 4.54C11.68 4.77 10.96 5.08 10.28 5.45C9.6 5.82 8.96 6.25 8.37 6.74C7.78 7.23 7.23 7.77 6.74 8.37C5.76 9.56 5.01 10.93 4.54 12.43C4.19 13.56 4 14.76 4 16C4 17.24 4.19 18.44 4.54 19.57C5.01 21.07 5.76 22.45 6.74 23.63C7.23 24.22 7.77 24.77 8.37 25.26C8.96 25.75 9.6 26.18 10.28 26.55C10.96 26.92 11.68 27.23 12.43 27.46C13.56 27.81 14.76 28 16 28C22.63 28 28 22.63 28 16C28 9.37 22.63 4 16 4ZM16 26C10.49 26 6 21.51 6 16C6 10.49 10.49 6 16 6C21.51 6 26 10.49 26 16C26 21.51 21.51 26 16 26Z"
+                                        fill="#585858" />
+                                </svg><svg width="32" height="32" viewBox="0 0 32 32" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M16 4C9.37 4 4 9.37 4 16C4 22.63 9.37 28 16 28C22.63 28 28 22.63 28 16C28 9.37 22.63 4 16 4ZM16 19.75C13.93 19.75 12.25 18.07 12.25 16C12.25 13.93 13.93 12.25 16 12.25C18.07 12.25 19.75 13.93 19.75 16C19.75 18.07 18.07 19.75 16 19.75Z"
+                                        fill="#008673" />
+                                    <path
+                                        d="M16 19.75C18.0711 19.75 19.75 18.0711 19.75 16C19.75 13.9289 18.0711 12.25 16 12.25C13.9289 12.25 12.25 13.9289 12.25 16C12.25 18.0711 13.9289 19.75 16 19.75Z"
+                                        fill="white" />
+                                </svg></div>
+                            <div class="imageRadio_Right">
+                                <p class="imageRadio_typo_ttl">3.9MB</p>
+                                <div class="imageRadio_imageArea">
+                                    <img src="./cameraUpload/sample_3.9MB.jpg" class="imageRadio_image">
+                                </div>
+                            </div>
+                        </label>
+                    </li>
+                    <li>
+                        <input type="radio" name="imageRadio" class="imageRadio" id="imageRadio4"><label
+                            for="imageRadio4">
+                            <div class="imageRadio_icon"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M16 26C21.5228 26 26 21.5228 26 16C26 10.4772 21.5228 6 16 6C10.4772 6 6 10.4772 6 16C6 21.5228 10.4772 26 16 26Z"
+                                        fill="white" />
+                                    <path
+                                        d="M16 4C14.76 4 13.56 4.19 12.43 4.54C11.68 4.77 10.96 5.08 10.28 5.45C9.6 5.82 8.96 6.25 8.37 6.74C7.78 7.23 7.23 7.77 6.74 8.37C5.76 9.56 5.01 10.93 4.54 12.43C4.19 13.56 4 14.76 4 16C4 17.24 4.19 18.44 4.54 19.57C5.01 21.07 5.76 22.45 6.74 23.63C7.23 24.22 7.77 24.77 8.37 25.26C8.96 25.75 9.6 26.18 10.28 26.55C10.96 26.92 11.68 27.23 12.43 27.46C13.56 27.81 14.76 28 16 28C22.63 28 28 22.63 28 16C28 9.37 22.63 4 16 4ZM16 26C10.49 26 6 21.51 6 16C6 10.49 10.49 6 16 6C21.51 6 26 10.49 26 16C26 21.51 21.51 26 16 26Z"
+                                        fill="#585858" />
+                                </svg><svg width="32" height="32" viewBox="0 0 32 32" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M16 4C9.37 4 4 9.37 4 16C4 22.63 9.37 28 16 28C22.63 28 28 22.63 28 16C28 9.37 22.63 4 16 4ZM16 19.75C13.93 19.75 12.25 18.07 12.25 16C12.25 13.93 13.93 12.25 16 12.25C18.07 12.25 19.75 13.93 19.75 16C19.75 18.07 18.07 19.75 16 19.75Z"
+                                        fill="#008673" />
+                                    <path
+                                        d="M16 19.75C18.0711 19.75 19.75 18.0711 19.75 16C19.75 13.9289 18.0711 12.25 16 12.25C13.9289 12.25 12.25 13.9289 12.25 16C12.25 18.0711 13.9289 19.75 16 19.75Z"
+                                        fill="white" />
+                                </svg></div>
+                            <div class="imageRadio_Right">
+                                <p class="imageRadio_typo_ttl">4.1MB</p>
+                                <div class="imageRadio_imageArea">
+                                    <img src="./cameraUpload/sample_4.1MB.jpg" class="imageRadio_image">
+                                </div>
+                            </div>
+                        </label>
+                    </li>
+                </ul>
+            </div>
+            <div class="btnArea">
+                <input type="submit" value="アップロード" class="uploadBtn" id="send">
+            </div>
+
+            <input type="file" name="picture" class="fileInput" id="uploadImg">
+        </form>
+    </main>
+
+    <script>
+        // 画像をバイナリデータに変換し、input要素に格納する関数
+        function convertImageToBinary() {
+            // 要素を取得
+            const imageRadio = document.getElementsByName('imageRadio');
+            const uploadImg = document.getElementsByName('uploadImg');
+            let img;
+
+            for (let i = 0; i < imageRadio.length; i++) {
+                if (imageRadio[i].checked) {
+                    img = imageRadio[i].nextElementSibling.getElementsByClassName('imageRadio_image')[0];
+                }
+            }
+
+            // Canvas要素を作成
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+
+            // 画像をCanvasに描画
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.drawImage(img, 0, 0);
+
+            // CanvasからBlobを取得
+            canvas.toBlob((blob) => {
+                // BlobからFileオブジェクトを作成
+                const file = new File([blob], 'image.jpg', { type: 'image/jpeg' });
+
+                // FileオブジェクトをDataTransferに追加
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(file);
+
+                // input要素にFileListを設定
+                uploadImg.files = dataTransfer.files;
+
+                console.log('画像がバイナリ化され、input要素に格納されました。');
+            }, 'image/jpeg');
+        }
+
+        // DOMツリー生成時の処理
+        document.addEventListener('DOMContentLoaded', function () {
+            // 要素を取得
+            const uploadBtn = document.getElementById('send'); // アップロードボタン
+
+            // アップロードボタン押下時の処理
+            uploadBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+                convertImageToBinary();
+                document.picture.submit();
+            });
+        });
+    </script>
+</body>
+
+</html>
